@@ -211,8 +211,16 @@ name of the source file.
       hasTitle = first and first.type is 'heading' and first.depth is 1
       title = if hasTitle then first.text else path.basename source
 
-      html = config.template {sources: config.sources, css: path.basename(config.css),
-        title, hasTitle, sections, path, destination,}
+      html = config.template {
+        sources: config.sources,
+        css: path.basename(config.css),
+        coda: config.coda,
+        title,
+        hasTitle,
+        sections,
+        path,
+        destination,
+      }
 
       console.log "docco: #{source} -> #{destination source}"
       fs.writeFileSync destination(source), html
@@ -229,6 +237,7 @@ user-specified options.
       output:     'docs'
       template:   null
       css:        null
+      coda:       null
       extension:  null
       languages:  {}
       marked:     null
@@ -256,6 +265,7 @@ is only copied for the latter.
         config.public       = path.join dir, 'public' if fs.existsSync path.join dir, 'public'
         config.template     = path.join dir, 'docco.jst'
         config.css          = options.css or path.join dir, 'docco.css'
+        config.coda      = options.coda
       config.template = _.template fs.readFileSync(config.template).toString()
 
       if options.marked
@@ -336,6 +346,7 @@ Parse options using [Commander](https://github.com/visionmedia/commander.js).
         .option('-o, --output [path]',    'output to a given folder', c.output)
         .option('-c, --css [file]',       'use a custom css file', c.css)
         .option('-t, --template [file]',  'use a custom .jst template', c.template)
+        .option('-a, --coda [string]', 'include coda', c.coda)
         .option('-e, --extension [ext]',  'assume a file extension for all inputs', c.extension)
         .option('-m, --marked [file]',    'use custom marked options', c.marked)
         .parse(args)

@@ -148,6 +148,7 @@
     html = config.template({
       sources: config.sources,
       css: path.basename(config.css),
+      coda: config.coda,
       title: title,
       hasTitle: hasTitle,
       sections: sections,
@@ -163,6 +164,7 @@
     output: 'docs',
     template: null,
     css: null,
+    coda: null,
     extension: null,
     languages: {},
     marked: null
@@ -184,6 +186,7 @@
       }
       config.template = path.join(dir, 'docco.jst');
       config.css = options.css || path.join(dir, 'docco.css');
+      config.coda = options.coda;
     }
     config.template = _.template(fs.readFileSync(config.template).toString());
     if (options.marked) {
@@ -249,7 +252,7 @@
       args = process.argv;
     }
     c = defaults;
-    commander.version(version).usage('[options] files').option('-L, --languages [file]', 'use a custom languages.json', _.compose(JSON.parse, fs.readFileSync)).option('-l, --layout [name]', 'choose a layout (parallel, linear or classic)', c.layout).option('-o, --output [path]', 'output to a given folder', c.output).option('-c, --css [file]', 'use a custom css file', c.css).option('-t, --template [file]', 'use a custom .jst template', c.template).option('-e, --extension [ext]', 'assume a file extension for all inputs', c.extension).option('-m, --marked [file]', 'use custom marked options', c.marked).parse(args).name = "docco";
+    commander.version(version).usage('[options] files').option('-L, --languages [file]', 'use a custom languages.json', _.compose(JSON.parse, fs.readFileSync)).option('-l, --layout [name]', 'choose a layout (parallel, linear or classic)', c.layout).option('-o, --output [path]', 'output to a given folder', c.output).option('-c, --css [file]', 'use a custom css file', c.css).option('-t, --template [file]', 'use a custom .jst template', c.template).option('-a, --coda [string]', 'include coda', c.coda).option('-e, --extension [ext]', 'assume a file extension for all inputs', c.extension).option('-m, --marked [file]', 'use custom marked options', c.marked).parse(args).name = "docco";
     if (commander.args.length) {
       return document(commander);
     } else {
