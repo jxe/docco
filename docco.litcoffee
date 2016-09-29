@@ -185,7 +185,12 @@ if not specified.
       for section, i in sections
         code = highlightjs.highlight(language.name, section.codeText).value
         code = code.replace(/\s+$/, '')
-        section.codeHtml = "<div class='highlight'><pre>#{code}</pre></div>"
+        escaped = section.codeText.replace(
+          /\&/g, '&amp;'
+        ).replace(
+          /\'/g, '&#39;'
+        )
+        section.codeHtml = "<div id='block#{i}' class='highlight' rawCode='#{escaped}'><pre>#{code}</pre></div>"
         section.docsHtml = marked(section.docsText)
 
 Once all of the code has finished highlighting, we can **write** the resulting

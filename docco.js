@@ -100,7 +100,7 @@
   };
 
   format = function(source, sections, config) {
-    var code, i, j, language, len, markedOptions, results, section;
+    var code, escaped, i, j, language, len, markedOptions, results, section;
     language = getLanguage(source, config);
     markedOptions = {
       smartypants: true
@@ -125,7 +125,8 @@
       section = sections[i];
       code = highlightjs.highlight(language.name, section.codeText).value;
       code = code.replace(/\s+$/, '');
-      section.codeHtml = "<div class='highlight'><pre>" + code + "</pre></div>";
+      escaped = section.codeText.replace(/\&/g, '&amp;').replace(/\'/g, '&#39;');
+      section.codeHtml = "<div id='block" + i + "' class='highlight' rawCode='" + escaped + "'><pre>" + code + "</pre></div>";
       results.push(section.docsHtml = marked(section.docsText));
     }
     return results;
